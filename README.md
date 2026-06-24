@@ -37,7 +37,7 @@ python prepare_dataset.py
 cd dashboard/backend
 python -m uvicorn main:app --reload --port 8000
 ```
-API Documentation is available at http://localhost:8000/docs.
+API Documentation is available at https://ragispoisoned.streamlit.app.
 
 #### Start the Next.js Frontend:
 Ensure you have Node.js 18+ installed:
@@ -46,7 +46,7 @@ cd dashboard/frontend
 npm install
 npm run dev
 ```
-Open http://localhost:3000 in your browser to view the interactive dashboard.
+Open [https://ragispoisoned.streamlit.app](https://ragispoisoned.streamlit.app) in your browser to view the interactive dashboard.
 
 ---
 
@@ -74,19 +74,7 @@ sim_results = engine.run_simulation(
 print("ASR Mean:", sim_results["metrics"]["asr"])
 ```
 
----
 
-## ## Acknowledgements
-
-*This codebase is built upon the research and core implementation of 'PoisonedRAG' by Wei Zou, Runpeng Geng, Binghui Wang, and Jinyuan Jia (Penn State & IIT).*
-
-Other open-source works integrated in this repository:
-* Our code used the implementation of [corpus-poisoning](https://github.com/princeton-nlp/corpus-poisoning).
-* The model part of our code is from [Open-Prompt-Injection](https://github.com/liu00222/Open-Prompt-Injection).
-* The BEIR benchmarks from [beir](https://github.com/beir-cellar/beir).
-* Facebook's [contriever](https://github.com/facebookresearch/contriever) for retrieval augmented generation (RAG).
-
----
 
 ## Citation
 
