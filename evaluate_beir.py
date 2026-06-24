@@ -13,9 +13,9 @@ from beir.retrieval.search.dense import DenseRetrievalExactSearch as DRES
 from beir.retrieval.models import DPR
 
 
-from src.contriever_src.contriever import Contriever
-from src.contriever_src.beir_utils import DenseEncoderModel
-from src.utils import load_json
+from rag_simulator.contriever_src.contriever import Contriever
+from rag_simulator.contriever_src.beir_utils import DenseEncoderModel
+from rag_simulator.utils import load_json
 
 import argparse
 parser = argparse.ArgumentParser(description='test')
@@ -34,7 +34,7 @@ parser.add_argument('--max_length', type=int, default=128)
 
 args = parser.parse_args()
 
-from src.utils import model_code_to_cmodel_name, model_code_to_qmodel_name
+from rag_simulator.utils import model_code_to_cmodel_name, model_code_to_qmodel_name
 
 def compress(results):
     for y in results:

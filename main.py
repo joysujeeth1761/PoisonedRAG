@@ -4,11 +4,11 @@ import json
 from tqdm import tqdm
 import random
 import numpy as np
-from src.models import create_model
-from src.utils import load_beir_datasets, load_models
-from src.utils import save_results, load_json, setup_seeds, clean_str, f1_score
-from src.attack import Attacker
-from src.prompts import wrap_prompt
+from rag_simulator.models import create_model
+from rag_simulator.utils import load_beir_datasets, load_models
+from rag_simulator.utils import save_results, load_json, setup_seeds, clean_str, f1_score
+from rag_simulator.attack import Attacker
+from rag_simulator.prompts import wrap_prompt
 import torch
 
 

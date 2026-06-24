@@ -3,10 +3,10 @@ import os
 import json
 from tqdm import tqdm
 import numpy as np
-from src.models import create_model
-from src.utils import load_beir_datasets, load_models
-from src.utils import load_json, save_json
-from src.prompts import wrap_prompt
+from rag_simulator.models import create_model
+from rag_simulator.utils import load_beir_datasets, load_models
+from rag_simulator.utils import load_json, save_json
+from rag_simulator.prompts import wrap_prompt
 import requests
 import torch
 import logging

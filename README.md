@@ -1,119 +1,103 @@
-# PoisonedRAG
+# RAG Attack Visualizer (PoisonedRAG Fork)
 
-Official repo of [USENIX Security 2025](https://www.usenix.org/conference/usenixsecurity25) paper: [PoisonedRAG: Knowledge Corruption Attacks to Retrieval-Augmented Generation of Large Language Models](https://arxiv.org/abs/2402.07867).
+RAG Attack Visualizer (rebranded from the original `PoisonedRAG` package) is an interactive, full-stack security dashboard designed to demonstrate and visualize knowledge corruption attacks on Retrieval-Augmented Generation (RAG) systems. It is built upon the USENIX Security 2025 paper: [PoisonedRAG: Knowledge Corruption Attacks to Retrieval-Augmented Generation of Large Language Models](https://arxiv.org/abs/2402.07867).
 
-The first knowledge database corruption attack against Retrievals-Augmented Generation (RAG) system.
+This repository has been enhanced with:
+- A clean, package-ready `src/` layout under the module name `rag_simulator` (rebranded as `rag-attack-visualizer`).
+- A unified Python wrapper (`AttackEngine`) abstracting attack logic (with automated simulations and live execution modes).
+- A full-stack web dashboard (FastAPI backend + Next.js frontend) to visualize the attack flow, inspect query decomposition ($P = S \oplus I$), and run interactive defense scenarios.
 
-## 🚀 News
-🎉 Jun 20, 2024: **PoisonedRAG gets accepted to [USENIX Security 2025](https://www.usenix.org/conference/usenixsecurity25)!**
+---
 
-🔥 Apr 20, 2024: **If you have any question or need other code or data, feel free to open an issue or email us!**
+## 🚀 Quick Start & Installation
 
-![Illustration of PoisonedRAG](PoisonedRAG.png "Illustration of PoisonedRAG")
-
-## 🔍 Quick Usage
-
-### 📃 Setup environment
-
+### 1. Setup Environment
+First, create and activate a Python 3.10 environment:
 ```bash
 conda create -n PoisonedRAG python=3.10
-```
-```bash
 conda activate PoisonedRAG
 ```
+
+Install core dependencies (including backend/dashboard dependencies):
 ```bash
-pip install beir openai google-generativeai
-pip install torch==1.13.0+cu117 torchvision==0.14.0+cu117 torchaudio==0.13.0 --extra-index-url https://download.pytorch.org/whl/cu117
-pip install --upgrade charset-normalizer
-pip3 install "fschat[model_worker,webui]"
+pip install -e .
+pip install fastapi uvicorn pydantic python-multipart
 ```
 
-### 💽 Dataset (optional, suggested)
-
-When running our code, the datasets will be automatically downloaded and saved in `datasets`. You could also run this line to manually download datasets.
-
+### 2. Download BEIR Datasets (Optional)
+If you wish to run live/real-time attacks instead of simulated paper results:
 ```bash
 python prepare_dataset.py
 ```
 
-### 🔑 Set API key
+### 3. Run the Dashboard
 
-If you want to use PaLM 2, GPT-3.5, GPT-4 or LLaMA-2, please enter your api key in **model_configs** folder.
-
-For LLaMA-2, the api key is your **HuggingFace Access Tokens**. You could visit [LLaMA-2's HuggingFace Page](https://huggingface.co/meta-llama/Llama-2-7b-chat-hf) first if you don't have the access token.
-
-Here is an example:
-
-```json
-"api_key_info":{
-    "api_keys":[
-        "Your api key here"
-    ],
-    "api_key_use": 0
-},
-```
-
-### 📝 Reproduce our results
- 
-There are some hyperparameters in **run.py** such as LLMs and datasets:
-
-**Note:** Currently we provide default setting for main results in our [paper](https://arxiv.org/abs/2402.07867). We will update and complete other settings later.
-
-```python
-test_params = {
-    # beir_info
-    'eval_model_code': "contriever",
-    'eval_dataset': "nq",            # nq, hotpotqa, msmarco
-    'split': "test",
-    'query_results_dir': 'main',
-
-    # LLM setting
-    'model_name': 'palm2',           # palm2, gpt3.5, gpt4, llama(7b|13b), vicuna(7b|13b|33b)
-    'use_truth': False,
-    'top_k': 5,
-    'gpu_id': 0,
-
-    # attack
-    'attack_method': 'LM_targeted',  # LM_targeted (black-box), hotflip (white-box)
-    'adv_per_query': 5,
-    'score_function': 'dot',
-    'repeat_times': 10,
-    'M': 10,
-    'seed': 12,
-
-    'note': None
-}
-```
-
-Execute **run.py** to reproduce experiments.
-
+#### Start the FastAPI Backend:
 ```bash
-python run.py
+cd dashboard/backend
+python -m uvicorn main:app --reload --port 8000
+```
+API Documentation is available at http://localhost:8000/docs.
+
+#### Start the Next.js Frontend:
+Ensure you have Node.js 18+ installed:
+```bash
+cd dashboard/frontend
+npm install
+npm run dev
+```
+Open http://localhost:3000 in your browser to view the interactive dashboard.
+
+---
+
+## 🛠️ Package Layout & Wrapper API
+
+The core simulation code has been reorganized into the `rag_simulator` module:
+- `rag_simulator.engine.AttackEngine`: Main wrapper class to invoke attacks.
+- `rag_simulator.attack`: Attack algorithms (hotflip, LM_targeted).
+- `rag_simulator.models`: Large Language Model wrappers.
+
+### Python API Example:
+```python
+from rag_simulator import AttackEngine
+
+engine = AttackEngine()
+
+# Run simulated metrics using paper benchmarks
+sim_results = engine.run_simulation(
+    dataset="nq",
+    attack_type="blackbox",
+    n=5,
+    k=5,
+    llm="palm2"
+)
+print("ASR Mean:", sim_results["metrics"]["asr"])
 ```
 
-### 🐱 Your own dataset
-If you want to perform experiments on your own dataset, you could refer to **evaluate_beir.py**, prepare your dataset as the beir format and use this file to compute the retrieval scores.
+---
 
-## Acknowledgement
+## ## Acknowledgements
 
+*This codebase is built upon the research and core implementation of 'PoisonedRAG' by Wei Zou, Runpeng Geng, Binghui Wang, and Jinyuan Jia (Penn State & IIT).*
+
+Other open-source works integrated in this repository:
 * Our code used the implementation of [corpus-poisoning](https://github.com/princeton-nlp/corpus-poisoning).
 * The model part of our code is from [Open-Prompt-Injection](https://github.com/liu00222/Open-Prompt-Injection).
-* Our code used [beir](https://github.com/beir-cellar/beir) benchmark.
-* Our code used [contriever](https://github.com/facebookresearch/contriever) for retrieval augmented generation (RAG).
+* The BEIR benchmarks from [beir](https://github.com/beir-cellar/beir).
+* Facebook's [contriever](https://github.com/facebookresearch/contriever) for retrieval augmented generation (RAG).
 
-
+---
 
 ## Citation
 
-If you use this code, please cite the following [paper](https://arxiv.org/abs/2402.07867):
+If you use this work, please cite the original authors' paper:
 
 ```bib
 @inproceedings{zou2025poisonedrag,
   title={$\{$PoisonedRAG$\}$: Knowledge corruption attacks to $\{$Retrieval-Augmented$\}$ generation of large language models},
-  author={Zou, Wei and Geng, Runpeng and Wang, Binghui and Jia, Jinyuan},
+  author={Zou, Wei and Geng, Runpeng Geng and Wang, Binghui and Jia, Jinyuan},
   booktitle={34th USENIX Security Symposium (USENIX Security 25)},
   pages={3827--3844},
   year={2025}
 }
 ```
-

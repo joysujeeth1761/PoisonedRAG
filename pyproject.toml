@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rag-attack-visualizer"
+version = "1.0.0"
+description = "A full-stack visualizer and attack engine for knowledge corruption on retrieval-augmented generation systems (Fork of PoisonedRAG)"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Wei Zou" },
+    { name = "Runpeng Geng" },
+    { name = "Binghui Wang" },
+    { name = "Jinyuan Jia" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "beir",
+    "openai",
+    "google-generativeai",
+    "transformers",
+    "sentence-transformers",
+    "tqdm",
+    "numpy",
+    "torch",
+    "streamlit",
+    "pandas",
+    "plotly"
+]
+
+[project.urls]
+Homepage = "https://github.com/sleeepeer/PoisonedRAG"
+
+[tool.setuptools.packages.find]
+where = ["src"]

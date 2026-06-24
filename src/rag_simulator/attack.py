@@ -2,7 +2,7 @@ from sentence_transformers import SentenceTransformer
 import torch
 import random
 from tqdm import tqdm
-from src.utils import load_json
+from rag_simulator.utils import load_json
 import json
 import os
 

@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #0a0e1a;
+  --bg-card: #151d35;
+  --accent-cyan: #00d4ff;
+  --accent-green: #10b981;
+  --accent-red: #ef4444;
+  --accent-gold: #fbbf24;
+}
+
+body {
+  background: var(--bg-primary);
+  color: #e2e8f0;
+  min-height: 100vh;
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-navy-800/80 backdrop-blur-sm border border-navy-700/50 rounded-xl;
+  }
+  .neon-border {
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.15), inset 0 0 15px rgba(0, 212, 255, 0.05);
+  }
+  .skeleton {
+    @apply animate-pulse bg-navy-700/50 rounded;
+  }
+}
